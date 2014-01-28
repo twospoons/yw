@@ -2,8 +2,21 @@
 using System.Collections;
 
 public abstract class Structure : MonoBehaviour {
-	
-	protected int level;
+	public enum StructureType {
+		None = 0,
+		Wall = 1,
+		Collector = 2,
+		Extractor = 3,
+		Turret = 4,
+		Mortar = 5,
+		AntiAirGun = 6,
+		Base = 7
+
+	}
+
+	public StructureType SType { get; set; }
+
+	protected int level = 1;
 	public int GetLevel() {
 		return level;
 	}

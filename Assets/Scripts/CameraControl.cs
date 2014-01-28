@@ -2,18 +2,13 @@
 using System.Collections;
 
 public class CameraControl : MonoBehaviour {
-	enum StructureType {
-		None = 0,
-		Wall = 1,
-		Collector = 2
-	}
 
 	float initialZoom = 15.0f;
 	float newZoom = 15.0f;
 	float zoomTimePassed = 0.0f;
 	float totalZoomTime = 0.25f;
 	bool zooming = false;
-	StructureType currentlyBuilding;
+	Structure.StructureType currentlyBuilding;
 
 	public Transform WallPrefab;
 	public Transform CollectorPrefab;
@@ -21,7 +16,7 @@ public class CameraControl : MonoBehaviour {
 	Transform pointerCube;
 	// Use this for initialization
 	void Start () {
-		currentlyBuilding = StructureType.Wall;
+		currentlyBuilding = Structure.StructureType.Wall;
 	}
 	
 	// Update is called once per frame
@@ -74,13 +69,13 @@ public class CameraControl : MonoBehaviour {
 				if(pointerCube.gameObject != null) {
 					GameObject.Destroy(pointerCube.gameObject);
 				}
-				currentlyBuilding = StructureType.Wall;
+				currentlyBuilding = Structure.StructureType.Wall;
 			}
 			if(Input.GetKeyUp(KeyCode.Alpha2)) {
 				if(pointerCube.gameObject != null) {
 					GameObject.Destroy(pointerCube.gameObject);
 				}
-				currentlyBuilding = StructureType.Collector;
+				currentlyBuilding = Structure.StructureType.Collector;
 			}
 		}
 
@@ -100,9 +95,9 @@ public class CameraControl : MonoBehaviour {
 				(int) hitPoint.z);
 
 			if(pointerCube == null || pointerCube.gameObject == null) {
-				if(currentlyBuilding == StructureType.Wall) {
+				if(currentlyBuilding == Structure.StructureType.Wall) {
 					pointerCube = (Transform) Instantiate(WallPrefab, pos, Quaternion.identity);
-				} else if(currentlyBuilding == StructureType.Collector) {
+				} else if(currentlyBuilding == Structure.StructureType.Collector) {
 					pointerCube = (Transform) Instantiate(CollectorPrefab, pos, Quaternion.identity);
 				}
 			}
@@ -117,11 +112,20 @@ public class CameraControl : MonoBehaviour {
 		}
 
 		if(Input.GetMouseButtonDown(0)) {
+			Transform t = null;
+			if(currentlyBuilding == Structure.StructureType.Wall) {
+				t = (Transform) Instantiate(WallPrefab, pointerCube.transform.position, Quaternion.identity);
+			} else if(currentlyBuilding == Structure.StructureType.Collector) {
+				t = (Transform) Instantiate(CollectorPrefab, pointerCube.transform.position, Quaternion.identity);
+			}
 
-			if(currentlyBuilding == StructureType.Wall) {
-				Transform t = (Transform) Instantiate(WallPrefab, pointerCube.transform.position, Quaternion.identity);
-			} else if(currentlyBuilding == StructureType.Collector) {
-				Transform t = (Transform) Instantiate(CollectorPrefab, pointerCube.transform.position, Quaternion.identity);
+			if(t != null) {
+				this.GetComponent<BaseLayout>().SetStructureAt(
+					(int) pointerCube.transform.position.x,
+					(int) pointerCube.transform.position.y,
+					t.GetComponent<Structure>());
+
+
 			}
 		}
 		
