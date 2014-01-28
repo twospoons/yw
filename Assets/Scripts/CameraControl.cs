@@ -2,22 +2,26 @@
 using System.Collections;
 
 public class CameraControl : MonoBehaviour {
+	enum StructureType {
+		None = 0,
+		Wall = 1,
+		Collector = 2
+	}
 
 	float initialZoom = 15.0f;
 	float newZoom = 15.0f;
 	float zoomTimePassed = 0.0f;
 	float totalZoomTime = 0.25f;
 	bool zooming = false;
+	StructureType currentlyBuilding;
 
 	public Transform WallPrefab;
+	public Transform CollectorPrefab;
 
-	GameObject pointerCube;
+	Transform pointerCube;
 	// Use this for initialization
 	void Start () {
-		pointerCube = GameObject.Find("PointerCube");
-		if(pointerCube == null) {
-			Debug.Log("Cannot find pointer cube");
-		}
+		currentlyBuilding = StructureType.Wall;
 	}
 	
 	// Update is called once per frame
@@ -46,25 +50,37 @@ public class CameraControl : MonoBehaviour {
 				camera.transform.position = new Vector3(
 					camera.transform.position.x - 0.1f, 
 					camera.transform.position.y, 
-					camera.transform.position.z);
+					camera.transform.position.z - 0.1f);
 			}
 			if(Input.GetKey(KeyCode.RightArrow)) {
 				camera.transform.position = new Vector3(
 					camera.transform.position.x + 0.1f, 
 					camera.transform.position.y, 
-					camera.transform.position.z);
+					camera.transform.position.z + 0.1f);
 			}
 			if(Input.GetKey(KeyCode.UpArrow)) {
 				camera.transform.position = new Vector3(
-					camera.transform.position.x, 
+					camera.transform.position.x - 0.1f, 
 					camera.transform.position.y, 
 					camera.transform.position.z + 0.1f);
 			}
 			if(Input.GetKey(KeyCode.DownArrow)) {
 				camera.transform.position = new Vector3(
-					camera.transform.position.x, 
+					camera.transform.position.x + 0.1f, 
 					camera.transform.position.y, 
 					camera.transform.position.z - 0.1f);
+			}
+			if(Input.GetKeyUp(KeyCode.Alpha1)) {
+				if(pointerCube.gameObject != null) {
+					GameObject.Destroy(pointerCube.gameObject);
+				}
+				currentlyBuilding = StructureType.Wall;
+			}
+			if(Input.GetKeyUp(KeyCode.Alpha2)) {
+				if(pointerCube.gameObject != null) {
+					GameObject.Destroy(pointerCube.gameObject);
+				}
+				currentlyBuilding = StructureType.Collector;
 			}
 		}
 
@@ -76,14 +92,22 @@ public class CameraControl : MonoBehaviour {
 	private void CheckPoint() {
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		var ent = 100.0f;
-		if (plane.Raycast(ray, out ent))
-		{
-			//Debug.Log("Plane Raycast hit at distance: " + ent);
+		if (plane.Raycast(ray, out ent)) {
 			var hitPoint = ray.GetPoint(ent);
-			pointerCube.transform.position = new Vector3(
+			var pos = new Vector3(
 				(int) hitPoint.x,
 				0,
 				(int) hitPoint.z);
+
+			if(pointerCube == null || pointerCube.gameObject == null) {
+				if(currentlyBuilding == StructureType.Wall) {
+					pointerCube = (Transform) Instantiate(WallPrefab, pos, Quaternion.identity);
+				} else if(currentlyBuilding == StructureType.Collector) {
+					pointerCube = (Transform) Instantiate(CollectorPrefab, pos, Quaternion.identity);
+				}
+			}
+			//Debug.Log("Plane Raycast hit at distance: " + ent);
+			pointerCube.transform.position = pos;
 			//var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			//go.transform.position = hitPoint;
 			//Debug.DrawRay (ray.origin, ray.direction * ent, Color.green);
@@ -93,14 +117,12 @@ public class CameraControl : MonoBehaviour {
 		}
 
 		if(Input.GetMouseButtonDown(0)) {
-			Transform t = (Transform) Instantiate(WallPrefab, pointerCube.transform.position, Quaternion.identity);
-			var wall = t.gameObject.GetComponent<Wall>();
-			if(wall != null) {
-				wall.Init();
+
+			if(currentlyBuilding == StructureType.Wall) {
+				Transform t = (Transform) Instantiate(WallPrefab, pointerCube.transform.position, Quaternion.identity);
+			} else if(currentlyBuilding == StructureType.Collector) {
+				Transform t = (Transform) Instantiate(CollectorPrefab, pointerCube.transform.position, Quaternion.identity);
 			}
-			//var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-			//go.transform.localScale = pointerCube.transform.localScale;
-			//go.transform.position = pointerCube.transform.position;
 		}
 		
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Structure : MonoBehaviour {
+public abstract class Structure : MonoBehaviour {
 	
 	protected int level;
 	public int GetLevel() {
@@ -23,13 +23,13 @@ public class Structure : MonoBehaviour {
 		return sizeY;
 	}
 
-	// Use this for initialization
-	void Start () {
-	
+	protected abstract void XStart();
+	protected abstract void XUpdate();
+	void Start() {
+		XStart();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void Update() {
+		XUpdate();
 	}
 }

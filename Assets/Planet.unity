@@ -236,6 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WallPrefab: {fileID: 1853348590}
+  CollectorPrefab: {fileID: 400000, guid: 50600dc6ca991453a8633a05f73cff90, type: 2}
 --- !u!1 &557511843
 GameObject:
   m_ObjectHideFlags: 0
