@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CameraControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BaseLayout.cs">
     <Files>
-      <File FileName="Assets/Scripts/CameraControl.cs" Line="119" Column="5" />
-      <File FileName="Assets/Scripts/Structure.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Wall.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Collector.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/BaseLayout.cs" Line="65" Column="27" />
-      <File FileName="Assets/UIScripts/InfoUI.cs" Line="40" Column="77" />
+      <File FileName="Assets/Scripts/CameraControl.cs" Line="125" Column="22" />
+      <File FileName="Assets/Scripts/Structure.cs" Line="14" Column="11" />
+      <File FileName="Assets/Scripts/Wall.cs" Line="8" Column="3" />
+      <File FileName="Assets/Scripts/Collector.cs" Line="9" Column="3" />
+      <File FileName="Assets/Scripts/BaseLayout.cs" Line="60" Column="24" />
+      <File FileName="Assets/UIScripts/InfoUI.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

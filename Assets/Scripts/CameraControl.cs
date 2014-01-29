@@ -5,6 +5,7 @@ public class CameraControl : MonoBehaviour {
 
 	public Transform WallPrefab;
 	public Transform CollectorPrefab;
+	public Transform NullStructurePrefab;
 
 	float initialZoom = 15.0f;
 	float newZoom = 15.0f;
@@ -114,22 +115,24 @@ public class CameraControl : MonoBehaviour {
 			//Debug.DrawRay (ray.origin, ray.direction * 10, Color.red);
 		}
 
-		if(Input.GetMouseButtonDown(0)) {
+		if(Input.GetMouseButtonUp(0)) {
 			this.GetComponent<BaseLayout>().SetStructureAt(
 				(int) pointerCube.transform.position.x,
 				(int) pointerCube.transform.position.z,
 				currentlyBuilding,
 				WallPrefab,
-				CollectorPrefab);
+				CollectorPrefab,
+				NullStructurePrefab);
 		}
 		// remove structure
-		if(Input.GetMouseButtonDown(1)) {
+		/*if(Input.GetMouseButtonDown(1)) {
 			this.GetComponent<BaseLayout>().SetStructureAt(
 				(int) pointerCube.transform.position.x,
 				(int) pointerCube.transform.position.z,
 				Structure.StructureType.None,
 				WallPrefab,
-				CollectorPrefab);
-		}
+				CollectorPrefab,
+				NullStructurePrefab);
+		}*/
 	}
 }

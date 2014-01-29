@@ -4,17 +4,18 @@ using System.Collections;
 public abstract class Structure : MonoBehaviour {
 	public enum StructureType {
 		None = 0,
-		Wall = 1,
-		Collector = 2,
-		Extractor = 3,
-		Turret = 4,
-		Mortar = 5,
-		AntiAirGun = 6,
-		Base = 7
+		NullStructure = 1,
+		Wall = 2,
+		Collector = 3,
+		Extractor = 4,
+		Turret = 5,
+		Mortar = 6,
+		AntiAirGun = 7,
+		Base = 8
 
 	}
 
-	public StructureType SType { get; set; }
+	public StructureType SType { get; protected set; }
 
 	protected int level = 1;
 	public int GetLevel() {
@@ -24,16 +25,6 @@ public abstract class Structure : MonoBehaviour {
 	protected int hitPoints;
 	public int GetHitPoints() {
 		return hitPoints;
-	}
-
-	protected int sizeX;
-	public int GetSizeX() {
-		return sizeX;
-	}
-
-	protected int sizeY;
-	public int GetSizeY() {
-		return sizeY;
 	}
 
 	protected abstract void XStart();
