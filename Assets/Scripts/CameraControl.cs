@@ -3,16 +3,16 @@ using System.Collections;
 
 public class CameraControl : MonoBehaviour {
 
+	public Transform WallPrefab;
+	public Transform CollectorPrefab;
+
 	float initialZoom = 15.0f;
 	float newZoom = 15.0f;
 	float zoomTimePassed = 0.0f;
 	float totalZoomTime = 0.25f;
 	bool zooming = false;
 	Structure.StructureType currentlyBuilding;
-
-	public Transform WallPrefab;
-	public Transform CollectorPrefab;
-
+	
 	Transform pointerCube;
 	// Use this for initialization
 	void Start () {
@@ -115,25 +115,21 @@ public class CameraControl : MonoBehaviour {
 		}
 
 		if(Input.GetMouseButtonDown(0)) {
-			Transform t = null;
-			if(currentlyBuilding == Structure.StructureType.Wall) {
-				t = (Transform) Instantiate(WallPrefab, pointerCube.transform.position, Quaternion.identity);
-				t.GetComponent<Structure>().SType = Structure.StructureType.Wall;
-			} else if(currentlyBuilding == Structure.StructureType.Collector) {
-				t = (Transform) Instantiate(CollectorPrefab, pointerCube.transform.position, Quaternion.identity);
-				t.GetComponent<Structure>().SType = Structure.StructureType.Collector;
-			}
-
-			if(t != null) {
-				this.GetComponent<BaseLayout>().SetStructureAt(
-					(int) pointerCube.transform.position.x,
-					(int) pointerCube.transform.position.z,
-					t.GetComponent<Structure>());
-
-
-			}
+			this.GetComponent<BaseLayout>().SetStructureAt(
+				(int) pointerCube.transform.position.x,
+				(int) pointerCube.transform.position.z,
+				currentlyBuilding,
+				WallPrefab,
+				CollectorPrefab);
 		}
-		
-
+		// remove structure
+		if(Input.GetMouseButtonDown(1)) {
+			this.GetComponent<BaseLayout>().SetStructureAt(
+				(int) pointerCube.transform.position.x,
+				(int) pointerCube.transform.position.z,
+				Structure.StructureType.None,
+				WallPrefab,
+				CollectorPrefab);
+		}
 	}
 }
