@@ -33,12 +33,37 @@ public class BaseLayout : MonoBehaviour {
 	
 	}
 
-	public void SetStructureAt(int x, int y, Structure structure) {
-		var v = new Vector2(x,y);
+	public void SetStructureAt(int x, int z, Structure structure) {
+
+		var v = new Vector2(x,z);
 		if(!structures.ContainsKey(v)) {
 			structures.Add(v, structure);
 		} else {
 			structures[v] = structure;
+		}
+
+		if(structure.SType == Structure.StructureType.Wall) {
+			//.. if there is a wall
+			var vectorNorth = new Vector2(x + 1, z);
+			if(structures.ContainsKey(vectorNorth) && structures[vectorNorth].SType == Structure.StructureType.Wall) {
+				structure.gameObject.transform.localScale = new Vector3(1,1,0.5f);
+				structures[vectorNorth].gameObject.transform.localScale = new Vector3(1,1,0.5f);
+			}
+			var vectorSouth = new Vector2(x - 1, z);
+			if(structures.ContainsKey(vectorSouth) && structures[vectorSouth].SType == Structure.StructureType.Wall) {
+				structure.gameObject.transform.localScale = new Vector3(1,1,0.5f);
+				structures[vectorSouth].gameObject.transform.localScale = new Vector3(1,1,0.5f);
+			}
+			var vectorEast = new Vector2(x, z + 1);
+			if(structures.ContainsKey(vectorEast) && structures[vectorEast].SType == Structure.StructureType.Wall) {
+				structure.gameObject.transform.localScale = new Vector3(0.5f,1,1);
+				structures[vectorEast].gameObject.transform.localScale = new Vector3(0.5f,1,1);
+			}
+			var vectorWest = new Vector2(x, z - 1);
+			if(structures.ContainsKey(vectorWest) && structures[vectorWest].SType == Structure.StructureType.Wall) {
+				structure.gameObject.transform.localScale = new Vector3(0.5f,1,1);
+				structures[vectorWest].gameObject.transform.localScale = new Vector3(0.5f,1,1);
+			}
 		}
 	}
 }

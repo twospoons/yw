@@ -83,7 +83,8 @@ public class CameraControl : MonoBehaviour {
 	}
 
 	Plane plane = new Plane(Vector3.up, Vector3.zero);
-	
+	public Vector3 CursorPoint { get; internal set; }
+
 	private void CheckPoint() {
 		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		var ent = 100.0f;
@@ -103,9 +104,11 @@ public class CameraControl : MonoBehaviour {
 			}
 			//Debug.Log("Plane Raycast hit at distance: " + ent);
 			pointerCube.transform.position = pos;
+			CursorPoint = pos;
 			//var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			//go.transform.position = hitPoint;
 			//Debug.DrawRay (ray.origin, ray.direction * ent, Color.green);
+
 		}
 		else {
 			//Debug.DrawRay (ray.origin, ray.direction * 10, Color.red);
@@ -115,14 +118,16 @@ public class CameraControl : MonoBehaviour {
 			Transform t = null;
 			if(currentlyBuilding == Structure.StructureType.Wall) {
 				t = (Transform) Instantiate(WallPrefab, pointerCube.transform.position, Quaternion.identity);
+				t.GetComponent<Structure>().SType = Structure.StructureType.Wall;
 			} else if(currentlyBuilding == Structure.StructureType.Collector) {
 				t = (Transform) Instantiate(CollectorPrefab, pointerCube.transform.position, Quaternion.identity);
+				t.GetComponent<Structure>().SType = Structure.StructureType.Collector;
 			}
 
 			if(t != null) {
 				this.GetComponent<BaseLayout>().SetStructureAt(
 					(int) pointerCube.transform.position.x,
-					(int) pointerCube.transform.position.y,
+					(int) pointerCube.transform.position.z,
 					t.GetComponent<Structure>());
 
 
