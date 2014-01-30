@@ -59,7 +59,6 @@ public class BaseLayout : MonoBehaviour {
 	private void Occupy(int x, int z, Structure structure, Transform nullStructurePrefab) {
 		var point = new Vector2(x, z);
 		if(structure.SType == Structure.StructureType.Wall) {
-			Debug.Log("adding wall");
 			structures.Add(point, structure);
 		}
 		if(structure.SType == Structure.StructureType.Collector) {
