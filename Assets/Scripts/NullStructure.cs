@@ -6,7 +6,7 @@ public class NullStructure : Structure {
 	public static readonly int SizeY = 1;
 
 
-	public Structure BelongsTo { get; set; }
+	public Vector2 BelongsTo { get; set; }
 
 	public NullStructure() {
 		this.SType = StructureType.NullStructure;

@@ -71,6 +71,7 @@ public class BaseLayout : MonoBehaviour {
 					} else {
 						var position = new Vector3(xx, 0, zz);
 						var t = (Transform) Instantiate(nullStructurePrefab, position, Quaternion.identity);
+						t.GetComponent<NullStructure>().BelongsTo = point;
 						structures.Add(test, t.GetComponent<Structure>());
 					}
 				}
@@ -90,6 +91,27 @@ public class BaseLayout : MonoBehaviour {
 
 		if(structures.ContainsKey(v) && type == Structure.StructureType.None) {
 			var tt = structures[v];
+			if(tt.gameObject != null) {
+				GameObject.Destroy(tt.gameObject);
+			}
+			var remove = new List<Vector2>();
+			// find if any object belongs to this.. and remove those..
+			foreach(var key in structures.Keys) {
+				NullStructure nls = structures[key] as NullStructure;
+				if(nls != null && nls.BelongsTo.Equals(v)) {
+					remove.Add(key);
+				}
+			}
+			foreach(var dl in remove) {
+				var rr = structures[dl];
+				if(rr != null) {
+					if(rr.gameObject != null) {
+						GameObject.Destroy(rr.gameObject);
+					}
+					GameObject.Destroy(rr);
+				}
+				structures.Remove(dl);
+			}
 			GameObject.Destroy(tt);
 			structures.Remove(v);
 			// need to also redraw map if a wall was removed..

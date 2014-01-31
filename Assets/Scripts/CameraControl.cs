@@ -7,6 +7,8 @@ public class CameraControl : MonoBehaviour {
 	public Transform CollectorPrefab;
 	public Transform NullStructurePrefab;
 
+	public Transform Sun;
+
 	float initialZoom = 15.0f;
 	float newZoom = 15.0f;
 	float zoomTimePassed = 0.0f;
@@ -19,9 +21,14 @@ public class CameraControl : MonoBehaviour {
 	void Start () {
 		currentlyBuilding = Structure.StructureType.Wall;
 	}
-	
+
+	void MoveSun() {
+		//Sun.transform.Rotate(Vector3.right * Time.deltaTime);
+		//Sun.transform.Rotate(Vector3.up * Time.deltaTime);
+	}
 	// Update is called once per frame
 	void Update () {
+		MoveSun();
 		zoomTimePassed += Time.deltaTime;
 		float t = zoomTimePassed / totalZoomTime;	
 		float to = Mathf.SmoothStep(initialZoom, newZoom, t);
@@ -125,7 +132,7 @@ public class CameraControl : MonoBehaviour {
 				NullStructurePrefab);
 		}
 		// remove structure
-		/*if(Input.GetMouseButtonDown(1)) {
+		if(Input.GetMouseButtonDown(1)) {
 			this.GetComponent<BaseLayout>().SetStructureAt(
 				(int) pointerCube.transform.position.x,
 				(int) pointerCube.transform.position.z,
@@ -133,6 +140,6 @@ public class CameraControl : MonoBehaviour {
 				WallPrefab,
 				CollectorPrefab,
 				NullStructurePrefab);
-		}*/
+		}
 	}
 }
