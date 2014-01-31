@@ -33,7 +33,7 @@ public class BaseLayout : MonoBehaviour {
 	
 	}
 
-	private bool CanPlaceStructure(int x, int z, Structure.StructureType type) {
+	private bool CanPlaceStructure(int x, int z, Structure.StructureType type, Transform prefab) {
 		var v = new Vector2(x,z);
 
 		// can't place a structure on an existing structure
@@ -41,9 +41,10 @@ public class BaseLayout : MonoBehaviour {
 			return false;						
 		}
 
-		if(type == Structure.StructureType.Collector) {
-			for(var xx = x - Collector.SizeX + 1; xx < Collector.SizeX + x; xx++) {
-				for(var zz = z - Collector.SizeY + 1; zz < Collector.SizeY + z; zz++) {
+		var stru = prefab.GetComponent<Structure>();
+		if(stru.GetSizeX() > 1 || stru.GetSizeZ() > 1) {
+			for(var xx = x - stru.GetSizeX() + 1; xx < stru.GetSizeX() + x; xx++) {
+				for(var zz = z - stru.GetSizeZ() + 1; zz < stru.GetSizeZ() + z; zz++) {
 					var test = new Vector2(xx,zz);
 					if(structures.ContainsKey(test)) {
 						return false;
@@ -56,14 +57,16 @@ public class BaseLayout : MonoBehaviour {
 		return true;
 	}
 
-	private void Occupy(int x, int z, Structure structure, Transform nullStructurePrefab) {
+	private void Occupy(int x, int z, Structure structure, Transform prefab, Transform nullStructurePrefab) {
 		var point = new Vector2(x, z);
 		if(structure.SType == Structure.StructureType.Wall) {
 			structures.Add(point, structure);
 		}
-		if(structure.SType == Structure.StructureType.Collector) {
-			for(var xx = x - Collector.SizeX + 1; xx < Collector.SizeX + x; xx++) {
-				for(var zz=  z - Collector.SizeY + 1; zz < Collector.SizeY + z; zz++) {
+		var stru = prefab.GetComponent<Structure>();
+
+		if(stru.GetSizeX() > 1 || stru.GetSizeZ() > 1) {
+			for(var xx = x - stru.GetSizeX() + 1; xx < stru.GetSizeX() + x; xx++) {
+				for(var zz=  z - stru.GetSizeZ() + 1; zz < stru.GetSizeZ() + z; zz++) {
 					var test = new Vector2(xx,zz);
 					//Debug.Log("xx:" + xx + " zz:" + zz + " cx:" + Collector.SizeX + " cz:" + Collector.SizeY);
 					if(xx == x && zz == z) {
@@ -80,11 +83,10 @@ public class BaseLayout : MonoBehaviour {
 	}
 
 	public void SetStructureAt(int x, int z, Structure.StructureType type, 
-	                           Transform wallPrefab, 
-	                           Transform collectorPrefab,
+	                           Transform prefab,
 	                           Transform nullStructurePrefab) {
 
-		if(!CanPlaceStructure(x, z, type)) {
+		if(!CanPlaceStructure(x, z, type, prefab)) {
 			return;
 		}
 		var v = new Vector2(x,z);
@@ -119,16 +121,10 @@ public class BaseLayout : MonoBehaviour {
 		}
 
 		var position = new Vector3(x, 0, z);
-		Transform t = null;
-
-		if(type == Structure.StructureType.Wall) {
-			t = (Transform) Instantiate(wallPrefab, position, Quaternion.identity);
-		} else if(type == Structure.StructureType.Collector) {
-			t = (Transform) Instantiate(collectorPrefab, position, Quaternion.identity);
-		}
+		Transform t = (Transform) Instantiate(prefab, position, Quaternion.identity);
 
 		var structure = t.GetComponent<Structure>();
-		Occupy(x, z, structure, nullStructurePrefab);
+		Occupy(x, z, structure, prefab, nullStructurePrefab);
 
 		if(structure.SType == Structure.StructureType.Wall) {
 			//.. if there is a wall

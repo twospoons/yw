@@ -2,6 +2,10 @@
 using System.Collections;
 
 public abstract class Structure : MonoBehaviour {
+
+	public abstract int GetSizeX();
+	public abstract int GetSizeZ();
+
 	public enum StructureType {
 		None = 0,
 		NullStructure = 1,

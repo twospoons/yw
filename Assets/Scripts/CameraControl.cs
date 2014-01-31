@@ -6,6 +6,9 @@ public class CameraControl : MonoBehaviour {
 	public Transform WallPrefab;
 	public Transform CollectorPrefab;
 	public Transform NullStructurePrefab;
+	public Transform TurretPrefab;
+
+	private Transform selectedPrefab;
 
 	public Transform Sun;
 
@@ -85,7 +88,12 @@ public class CameraControl : MonoBehaviour {
 				}
 				currentlyBuilding = Structure.StructureType.Collector;
 			}
-		}
+			if(Input.GetKeyUp(KeyCode.Alpha3)) {
+				if(pointerCube.gameObject != null) {
+					GameObject.Destroy(pointerCube.gameObject);
+				}
+				currentlyBuilding = Structure.StructureType.Turret;
+			}		}
 
 		CheckPoint();
 	}
@@ -106,8 +114,13 @@ public class CameraControl : MonoBehaviour {
 			if(pointerCube == null || pointerCube.gameObject == null) {
 				if(currentlyBuilding == Structure.StructureType.Wall) {
 					pointerCube = (Transform) Instantiate(WallPrefab, pos, Quaternion.identity);
+					selectedPrefab = WallPrefab;
 				} else if(currentlyBuilding == Structure.StructureType.Collector) {
 					pointerCube = (Transform) Instantiate(CollectorPrefab, pos, Quaternion.identity);
+					selectedPrefab = CollectorPrefab;
+				} else if(currentlyBuilding == Structure.StructureType.Turret) {
+					pointerCube = (Transform) Instantiate(TurretPrefab, pos, Quaternion.identity);
+					selectedPrefab = TurretPrefab;
 				}
 			}
 			//Debug.Log("Plane Raycast hit at distance: " + ent);
@@ -127,8 +140,7 @@ public class CameraControl : MonoBehaviour {
 				(int) pointerCube.transform.position.x,
 				(int) pointerCube.transform.position.z,
 				currentlyBuilding,
-				WallPrefab,
-				CollectorPrefab,
+				selectedPrefab,
 				NullStructurePrefab);
 		}
 		// remove structure
@@ -137,8 +149,7 @@ public class CameraControl : MonoBehaviour {
 				(int) pointerCube.transform.position.x,
 				(int) pointerCube.transform.position.z,
 				Structure.StructureType.None,
-				WallPrefab,
-				CollectorPrefab,
+				selectedPrefab,
 				NullStructurePrefab);
 		}
 	}

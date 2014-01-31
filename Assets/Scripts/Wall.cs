@@ -3,9 +3,16 @@ using System.Collections;
 
 public class Wall : Structure {
 
-	public static readonly int SizeX = 1;
-	public static readonly int SizeY = 1;
-
+	private static readonly int SizeX = 1;
+	private static readonly int SizeZ = 1;
+	
+	public override int GetSizeX () {
+		return SizeX;
+	}
+	
+	public override int GetSizeZ () {
+		return SizeZ;
+	}
 	public Wall() {
 		this.SType = StructureType.Wall;
 		this.level = 1;

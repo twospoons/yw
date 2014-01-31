@@ -3,8 +3,16 @@ using System.Collections;
 
 public class Collector : Structure {
 
-	public static readonly int SizeX = 2;
-	public static readonly int SizeY = 2;
+	private static readonly int SizeX = 2;
+	private static readonly int SizeZ = 2;
+
+	public override int GetSizeX () {
+		return SizeX;
+	}
+
+	public override int GetSizeZ () {
+		return SizeZ;
+	}
 
 	public Collector() {
 		this.SType = StructureType.Collector;
