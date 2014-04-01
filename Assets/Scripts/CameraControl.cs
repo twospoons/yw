@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Structures;
 
 public class CameraControl : MonoBehaviour {
 
@@ -93,7 +94,8 @@ public class CameraControl : MonoBehaviour {
 					GameObject.Destroy(pointerCube.gameObject);
 				}
 				currentlyBuilding = Structure.StructureType.Turret;
-			}		}
+			}		
+		}
 
 		CheckPoint();
 	}

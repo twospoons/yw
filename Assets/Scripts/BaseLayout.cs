@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Structures;
 
 public class BaseLayout : MonoBehaviour {
 
@@ -104,6 +105,7 @@ public class BaseLayout : MonoBehaviour {
 					remove.Add(key);
 				}
 			}
+
 			foreach(var dl in remove) {
 				var rr = structures[dl];
 				if(rr != null) {

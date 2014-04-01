@@ -1,0 +1,8 @@
+Save / Load base
+Create player object
+  - resources
+Add Build time for structures
+Create AI collector
+Create Resource Tiles
+Gather Resources
+Create Extractor
