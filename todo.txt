@@ -6,3 +6,7 @@ Create AI collector
 Create Resource Tiles
 Gather Resources
 Create Extractor
+Terraform the landscape
+  - create shape (small, medium, large)
+  - create resources
+  - 
