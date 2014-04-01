@@ -1,6 +1,6 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/DataTypes/Player.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Terraform.cs">
     <Files>
       <File FileName="Assets/Scripts/BaseLayout.cs" Line="4" Column="18" />
       <File FileName="Assets/UIScripts/InfoUI.cs" Line="1" Column="1" />
@@ -11,6 +11,7 @@
       <File FileName="Assets/Scripts/Structures/Turret.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Structures/Wall.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/DataTypes/Player.cs" Line="10" Column="64" />
+      <File FileName="Assets/Scripts/Terraform.cs" Line="22" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
