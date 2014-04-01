@@ -11,23 +11,33 @@ public class Terraform : MonoBehaviour {
 
 	public TerraformSize Size;
 	public Vector3 Position;
+	public Vector3 SmallSize;
+	public Vector3 MediumSize;
+	public Vector3 LargeSize;
+
+	public Material GroundMaterial;
+
 	GameObject ground;
 	GameObject pointLight;
 	// Use this for initialization
 	void Start () {
 		// create the world
 		ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		var size = new Vector3(100, 0.5f, 100);
+		var size = MediumSize;
 		if(Size == TerraformSize.Small) {
-			size = new Vector3(50, 0.5f, 50);
+			size = SmallSize;
 		} else if(Size == TerraformSize.Medium) {
-			size = new Vector3(100, 0.5f, 100);
+			size = MediumSize;
 		} else if(Size == TerraformSize.Large) {
-			size = new Vector3(150, 0.5f, 150);
+			size = LargeSize;
 		}
 
 		ground.transform.localScale = size;
 		ground.transform.position = Position;
+		GroundMaterial.SetInt("Flow", 1000);
+		ground.renderer.material = GroundMaterial;
+		Debug.Log (ground.renderer.material.GetFloat("Flow"));
+		//ground.renderer.material.SetFloat("Zoom", 1.0f);
 	}
 	
 	// Update is called once per frame
