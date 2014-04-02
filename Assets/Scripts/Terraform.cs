@@ -22,12 +22,7 @@ public class Terraform : MonoBehaviour {
 	//public Material GroundMaterial;
 
 	public void BuildTerrain() {
-		//if(GroundMaterial == null) {
-		//	Debug.Log("No material found, cannot render");
-		//	return;
-		//}
-
-		var before = DateTime.Now;
+		//var before = DateTime.Now;
 		// create the world
 		
 		var ground = transform;
@@ -42,20 +37,15 @@ public class Terraform : MonoBehaviour {
 		
 		ground.transform.localScale = size;
 		ground.transform.position = Position;
-		//GroundMaterial.SetInt("Flow", 1000);
-		//ground.renderer.sharedMaterial = GroundMaterial;
-
 		var subStance = ground.renderer.sharedMaterial as ProceduralMaterial;
-		var props = subStance.GetProceduralPropertyDescriptions();
+		//var props = subStance.GetProceduralPropertyDescriptions();
 		//props.ToList().ForEach( o => Debug.Log("Name: " + o.name + ", value: " + o.step.ToString()));
 
-		subStance.SetProceduralFloat("Zoom", 1.0f);
+		//subStance.SetProceduralFloat("Zoom", 1.0f);
+		subStance.SetProceduralFloat("$randomseed", UnityEngine.Random.Range(0, 10000));
 		subStance.RebuildTextures();
 
-		var after = DateTime.Now.Subtract(before).Milliseconds;
-		Debug.Log("Done in: " + after.ToString() + "ms");
-		//Debug.Log (ground.renderer.material.GetFloat("Flow"));
-		//ground.renderer.material.SetFloat("Zoom", 1.0f);
+		//var after = DateTime.Now.Subtract(before).Milliseconds;
 	}
 	
 	GameObject pointLight;

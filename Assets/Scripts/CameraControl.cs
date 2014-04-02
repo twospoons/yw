@@ -136,8 +136,8 @@ public class CameraControl : MonoBehaviour {
 		else {
 			//Debug.DrawRay (ray.origin, ray.direction * 10, Color.red);
 		}
-
-		if(Input.GetMouseButtonUp(0)) {
+	
+		if(Input.GetMouseButton(0)) {
 			this.GetComponent<BaseLayout>().SetStructureAt(
 				(int) pointerCube.transform.position.x,
 				(int) pointerCube.transform.position.z,
@@ -146,7 +146,7 @@ public class CameraControl : MonoBehaviour {
 				NullStructurePrefab);
 		}
 		// remove structure
-		if(Input.GetMouseButtonDown(1)) {
+		if(Input.GetMouseButtonUp(1)) {
 			this.GetComponent<BaseLayout>().SetStructureAt(
 				(int) pointerCube.transform.position.x,
 				(int) pointerCube.transform.position.z,
