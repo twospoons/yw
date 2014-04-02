@@ -31,7 +31,7 @@ SubstanceImporter:
         texture: {instanceID: 0}
     - name: Flow
       value:
-        scalar[0]: 685
+        scalar[0]: 1918
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
@@ -45,35 +45,35 @@ SubstanceImporter:
         texture: {instanceID: 0}
     - name: Waves_Lenght
       value:
-        scalar[0]: 0
+        scalar[0]: .5
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
         texture: {instanceID: 0}
     - name: Waves_Warp
       value:
-        scalar[0]: 1
+        scalar[0]: .5
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
         texture: {instanceID: 0}
     - name: Waves_Width
       value:
-        scalar[0]: .800000012
+        scalar[0]: .5
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
         texture: {instanceID: 0}
     - name: Zoom
       value:
-        scalar[0]: 0
+        scalar[0]: 1
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
         texture: {instanceID: 0}
     - name: Depth
       value:
-        scalar[0]: -.50999999
+        scalar[0]: -.600000024
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
@@ -87,7 +87,7 @@ SubstanceImporter:
         texture: {instanceID: 0}
     - name: Normal
       value:
-        scalar[0]: .449999988
+        scalar[0]: .5
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
@@ -101,7 +101,7 @@ SubstanceImporter:
         texture: {instanceID: 0}
     - name: Angle
       value:
-        scalar[0]: .150000006
+        scalar[0]: .125
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
@@ -129,7 +129,7 @@ SubstanceImporter:
         texture: {instanceID: 0}
     - name: Contrast
       value:
-        scalar[0]: -.239999995
+        scalar[0]: 0
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
@@ -137,8 +137,8 @@ SubstanceImporter:
     materialInformation:
       serializedVersion: 5
       offset: {x: 0, y: 0}
-      scale: {x: 5, y: 5}
-      generateAllOutputs: 1
+      scale: {x: 50, y: 50}
+      generateAllOutputs: 0
       animationUpdateRate: 42
     materialProperties:
       serializedVersion: 2
