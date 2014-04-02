@@ -94,7 +94,13 @@ public class CameraControl : MonoBehaviour {
 					GameObject.Destroy(pointerCube.gameObject);
 				}
 				currentlyBuilding = Structure.StructureType.Turret;
-			}		
+			}	
+
+			if(Input.GetKeyUp (KeyCode.Z)) {
+				var noise = new SimplexNoiseGenerator(new [] {1, 2, 3, 4, 5, 6, 7, 8});
+				var f = noise.noise(0.1f, 0.1f, 0.2f);
+				Debug.Log("Noise: " + f.ToString());
+			}
 		}
 
 		CheckPoint();
