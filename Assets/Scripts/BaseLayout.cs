@@ -126,6 +126,7 @@ public class BaseLayout : MonoBehaviour {
 		Transform t = (Transform) Instantiate(prefab, position, Quaternion.identity);
 
 		var structure = t.GetComponent<Structure>();
+		structure.Awake();
 		Occupy(x, z, structure, prefab, nullStructurePrefab);
 
 		if(structure.SType == Structure.StructureType.Wall) {

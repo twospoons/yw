@@ -68,10 +68,10 @@ public class Terraform : MonoBehaviour {
 					color = new Color(0, 0, noi, noi);
 				} else if(noi > 0.2f) {
 					// grass
-					color = new Color(0, noi, 0, 0.8f);
+					//color = new Color(0, noi, 0, 0.8f);
 				} else {
 					// nothing
-					color = new Color(0, 0, 0, 0);
+					//color = new Color(0, 0, 0, 0);
 				}
 				tex.SetPixel(x, y, color);
 			}
@@ -92,9 +92,9 @@ public class Terraform : MonoBehaviour {
 				// basically a small value will leave a bunch of small specles, large number larger objects
 				// noise.coherentNoise(x, y, 0, 10, 75, 1); -> looks like a star map
 				// noise.coherentNoise(x, y, 0, 1, 75, 2); -> clouds
-				var noi = noise.coherentNoise(x, y, 0, 1, 75, 1);
+				var noi = noise.coherentNoise(x, y, 0, 4, 75, 1);
 				var color = new Color();
-				if(noi > 0.2f) {
+				if(noi > 0.4f) {
 					color = new Color(noi, noi, noi, noi * 2);
 				} else {
 					color = new Color(0, 0, 0, 0);

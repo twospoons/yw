@@ -6,6 +6,7 @@ namespace Structures {
 
 		public abstract int GetSizeX();
 		public abstract int GetSizeZ();
+		public Transform IsPlacedOn { get; set; }
 
 		public enum StructureType {
 			None = 0,
@@ -33,9 +34,24 @@ namespace Structures {
 			return hitPoints;
 		}
 
+		protected bool isAwake = false;
+		public void Awake() {
+			isAwake = true;
+		}
+
+		public void Sleep() {
+			isAwake = false;
+		}
+
+
 		protected abstract void XStart();
 		protected abstract void XUpdate();
 		void Start() {
+			IsPlacedOn = GameObject.Find("PlanetSurface").transform;
+			if(IsPlacedOn == null) {
+				Debug.LogError("Unable to find object named 'PlanetSurface'");
+			}
+			
 			XStart();
 		}
 
