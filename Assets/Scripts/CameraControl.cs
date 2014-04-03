@@ -8,6 +8,7 @@ public class CameraControl : MonoBehaviour {
 	public Transform CollectorPrefab;
 	public Transform NullStructurePrefab;
 	public Transform TurretPrefab;
+	public Transform SelectorCube;
 
 	private Transform selectedPrefab;
 
@@ -133,7 +134,10 @@ public class CameraControl : MonoBehaviour {
 			}
 			//Debug.Log("Plane Raycast hit at distance: " + ent);
 			pointerCube.transform.position = pos;
-			CursorPoint = pos;
+			SelectorCube.transform.position = new Vector3(pos.x, -0.5f, pos.z);
+			var stru = selectedPrefab.GetComponent<Structure>();
+			SelectorCube.transform.localScale = new Vector3(stru.GetSizeX(), 0.1f, stru.GetSizeZ());
+			
 			//var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			//go.transform.position = hitPoint;
 			//Debug.DrawRay (ray.origin, ray.direction * ent, Color.green);
