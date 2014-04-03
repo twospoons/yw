@@ -37,6 +37,9 @@ public class Terraform : MonoBehaviour {
 		
 		ground.transform.localScale = size;
 		ground.transform.position = Position;
+		GenerateWater(ground);
+		GenerateOre(ground);
+
 		//var subStance = ground.renderer.sharedMaterial as ProceduralMaterial;
 		//var props = subStance.GetProceduralPropertyDescriptions();
 		//props.ToList().ForEach( o => Debug.Log("Name: " + o.name + ", value: " + o.step.ToString()));
@@ -45,8 +48,12 @@ public class Terraform : MonoBehaviour {
 		//subStance.SetProceduralFloat("$randomseed", UnityEngine.Random.Range(0, 10000));
 		//subStance.RebuildTextures();
 
+
+		//var after = DateTime.Now.Subtract(before).Milliseconds;
+	}
+	void GenerateWater(Transform ground) {
 		var noise = new SimplexNoiseGenerator();
-		// test creating a noise texture for fun
+		// test creating a noise texture for water
 		var tex = new Texture2D(256, 256);
 		for(var x = 0; x < tex.width; x++) {
 			for(var y = 0; y < tex.height; y++) {
@@ -54,10 +61,41 @@ public class Terraform : MonoBehaviour {
 				// basically a small value will leave a bunch of small specles, large number larger objects
 				// noise.coherentNoise(x, y, 0, 10, 75, 1); -> looks like a star map
 				// noise.coherentNoise(x, y, 0, 1, 75, 2); -> clouds
-				var noi = noise.coherentNoise(x, y, 0, 1, 75, 2);
+				var noi = noise.coherentNoise(x, y, 0, 2, 125, 2);
+				var color = new Color();
+				if(noi > 0.5f) {
+					// water
+					color = new Color(0, 0, noi, noi);
+				} else if(noi > 0.2f) {
+					// grass
+					color = new Color(0, noi, 0, 0.8f);
+				} else {
+					// nothing
+					color = new Color(0, 0, 0, 0);
+				}
+				tex.SetPixel(x, y, color);
+			}
+		}
+		tex.filterMode = FilterMode.Trilinear;
+		tex.Apply();
+		ground.renderer.sharedMaterials[0].mainTexture = tex;
+
+	}
+
+	void GenerateOre(Transform ground) {
+		var noise = new SimplexNoiseGenerator();
+		// test creating a noise texture for water
+		var tex = new Texture2D(256, 256);
+		for(var x = 0; x < tex.width; x++) {
+			for(var y = 0; y < tex.height; y++) {
+				// multiplier affects how large the patter is; the large the number the bigger the waves (noise)
+				// basically a small value will leave a bunch of small specles, large number larger objects
+				// noise.coherentNoise(x, y, 0, 10, 75, 1); -> looks like a star map
+				// noise.coherentNoise(x, y, 0, 1, 75, 2); -> clouds
+				var noi = noise.coherentNoise(x, y, 0, 1, 75, 1);
 				var color = new Color();
 				if(noi > 0.2f) {
-					color = new Color(0, 0, noi, noi);
+					color = new Color(noi, noi, noi, noi * 2);
 				} else {
 					color = new Color(0, 0, 0, 0);
 				}
@@ -66,10 +104,10 @@ public class Terraform : MonoBehaviour {
 		}
 		tex.filterMode = FilterMode.Trilinear;
 		tex.Apply();
-		ground.renderer.sharedMaterial.mainTexture = tex;
-		//var after = DateTime.Now.Subtract(before).Milliseconds;
+		ground.renderer.sharedMaterials[1].mainTexture = tex;
+
 	}
-	
+
 	GameObject pointLight;
 	// Use this for initialization
 	void Start () {
