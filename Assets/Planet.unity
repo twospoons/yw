@@ -289,10 +289,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Size: 0
+  CurrentSize: {x: 50, y: .5, z: 50}
   Position: {x: 0, y: -.800000012, z: 0}
   SmallSize: {x: 50, y: .5, z: 50}
   MediumSize: {x: 100, y: .5, z: 100}
   LargeSize: {x: 150, y: .5, z: 150}
+  TextureWidth: 256
+  TextureHeight: 256
 --- !u!23 &643836722
 Renderer:
   m_ObjectHideFlags: 0
