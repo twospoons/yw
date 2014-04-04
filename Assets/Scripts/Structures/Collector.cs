@@ -8,7 +8,7 @@ namespace Structures {
 		private static readonly int SizeZ = 2;
 
 		private float turnspeed = 1.0f;
-		private float moveSpeed = 1.0f;
+		private float moveSpeed = 5.0f;
 		private GameObject target; 
 		private Vector3 rotateToTarget;
 		private Quaternion rotateTo;
@@ -57,7 +57,7 @@ namespace Structures {
 					//var x = (terra.CurrentSize.x * percentX) - (terra.CurrentSize.x / 2.0f);
 					//var z = (terra.CurrentSize.z * percentZ) - (terra.CurrentSize.z / 2.0f);
 
-					target.transform.position = new Vector3(water.x, 0, water.y);
+					target.transform.position = new Vector3(water.x * -1, 0, water.y * -1);
 					rotateToTarget = target.transform.forward * 1000;
 					rotateTo = Quaternion.LookRotation(target.transform.position - transform.position);
 				}

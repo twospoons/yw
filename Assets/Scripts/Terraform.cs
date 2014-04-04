@@ -142,8 +142,8 @@ public class Terraform : MonoBehaviour {
 		if(waterCoords.Count == 0) {
 			return Vector2.zero;
 		}
-		var dists = waterCoords.OrderBy(o => Vector2.Distance(o, from)).Select(o => Vector2.Distance(o, from)).ToList(); 
- 		var ret = waterCoords.OrderBy(o => Vector2.Distance(o, from)).First();
+		//var dists = waterCoords.OrderBy(o => Vector2.Distance(o, from)).Select(o => Vector2.Distance(o, from)).ToList(); 
+ 		var ret = waterCoords.OrderByDescending(o => Vector2.Distance(o, from)).First();
 		return ret;
 	}
 
