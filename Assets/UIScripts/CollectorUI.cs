@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CollectorUI : MonoBehaviour {
 	private Rect windowRect = new Rect(10, 230, 400, 440);
-	private bool renderUI = true;
+	private bool renderUI = false;
 	private CameraControl ccScript;
 
 	public GUIStyle Style;
@@ -33,7 +33,6 @@ public class CollectorUI : MonoBehaviour {
 				windowRect.height = 26;
 			}
 		}
-		return;
 		var coords = terraform.GetWaterCoords();
 		if(coords != null) {
 			var xx = 35;

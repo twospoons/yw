@@ -148,7 +148,7 @@ public class CameraControl : MonoBehaviour {
 			//Debug.DrawRay (ray.origin, ray.direction * 10, Color.red);
 		}
 	
-		if(Input.GetMouseButton(0)) {
+		if(Input.GetMouseButtonUp(0)) {
 			this.GetComponent<BaseLayout>().SetStructureAt(
 				(int) pointerCube.transform.position.x,
 				(int) pointerCube.transform.position.z,

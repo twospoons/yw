@@ -7,6 +7,18 @@ namespace Structures {
 		public abstract int GetSizeX();
 		public abstract int GetSizeZ();
 		public Transform IsPlacedOn { get; set; }
+		protected BaseLayout baseLayout;
+
+		public bool IsAlive {
+			get { return isAwake; }
+			set { isAwake = value; }
+		}
+
+		private bool canCollide = true;
+		public bool CanCollide { 
+			get { return canCollide; } 
+			set { canCollide = value; } 
+		}
 
 		public enum StructureType {
 			None = 0,
@@ -50,6 +62,11 @@ namespace Structures {
 			IsPlacedOn = GameObject.Find("PlanetSurface").transform;
 			if(IsPlacedOn == null) {
 				Debug.LogError("Unable to find object named 'PlanetSurface'");
+			}
+
+			baseLayout = GameObject.FindObjectOfType<BaseLayout>();
+			if(baseLayout == null) {
+				Debug.LogError("Unable to find script of type 'BaseLayout'");
 			}
 			
 			XStart();

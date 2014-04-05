@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Structures;
+using System.Linq;
 
 public class BaseLayout : MonoBehaviour {
 
@@ -24,6 +25,16 @@ public class BaseLayout : MonoBehaviour {
 	}
 
 	Dictionary<Vector2,Structure> structures = new Dictionary<Vector2,Structure>();
+
+	public Vector3[] GetCollectorWaterTargetsExcept(Collector except) {
+		// find all structures of type collector which is not 'except' collector
+		// and return an array of their water target's position
+		return structures.Values
+			.Where(o => o.SType == Structure.StructureType.Collector && o != except && (o as Collector).WaterTarget != null)
+			.Select(o => (o as Collector).WaterTarget.transform.position)
+			.ToArray();
+	}
+
 	// Use this for initialization
 	void Start () {
 	
@@ -64,22 +75,25 @@ public class BaseLayout : MonoBehaviour {
 			structures.Add(point, structure);
 		}
 		var stru = prefab.GetComponent<Structure>();
-
-		if(stru.GetSizeX() > 1 || stru.GetSizeZ() > 1) {
-			for(var xx = x - stru.GetSizeX() + 1; xx < stru.GetSizeX() + x; xx++) {
-				for(var zz=  z - stru.GetSizeZ() + 1; zz < stru.GetSizeZ() + z; zz++) {
-					var test = new Vector2(xx,zz);
-					//Debug.Log("xx:" + xx + " zz:" + zz + " cx:" + Collector.SizeX + " cz:" + Collector.SizeY);
-					if(xx == x && zz == z) {
-						structures.Add(point, structure);
-					} else {
-						var position = new Vector3(xx, 0, zz);
-						var t = (Transform) Instantiate(nullStructurePrefab, position, Quaternion.identity);
-						t.GetComponent<NullStructure>().BelongsTo = point;
-						structures.Add(test, t.GetComponent<Structure>());
+		if(stru.CanCollide) {
+			if(stru.GetSizeX() > 1 || stru.GetSizeZ() > 1) {
+				for(var xx = x - stru.GetSizeX() + 1; xx < stru.GetSizeX() + x; xx++) {
+					for(var zz=  z - stru.GetSizeZ() + 1; zz < stru.GetSizeZ() + z; zz++) {
+						var test = new Vector2(xx,zz);
+						//Debug.Log("xx:" + xx + " zz:" + zz + " cx:" + Collector.SizeX + " cz:" + Collector.SizeY);
+						if(xx == x && zz == z) {
+							structures.Add(point, structure);
+						} else {
+							var position = new Vector3(xx, 0, zz);
+							var t = (Transform) Instantiate(nullStructurePrefab, position, Quaternion.identity);
+							t.GetComponent<NullStructure>().BelongsTo = point;
+							structures.Add(test, t.GetComponent<Structure>());
+						}
 					}
 				}
 			}
+		} else {
+			structures.Add(point, structure);
 		}
 	}
 
