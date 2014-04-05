@@ -29,6 +29,10 @@ public class Terraform : MonoBehaviour {
 	private List<Vector2> waterCoords;
 	private List<Vector2> oreCoords;
 
+	public List<Vector2> GetWaterCoords() {
+		return waterCoords;
+	}
+
 	public void BuildTerrain() {
 		//var before = DateTime.Now;
 		// create the world
@@ -59,6 +63,28 @@ public class Terraform : MonoBehaviour {
 
 		//var after = DateTime.Now.Subtract(before).Milliseconds;
 	}
+	void GenerateWaterTest(Transform ground) {
+		water = new float[TextureWidth, TextureHeight];
+		waterCoords = new List<Vector2>();
+		var noise = new SimplexNoiseGenerator();
+		// test creating a noise texture for water
+		var tex = new Texture2D(TextureWidth, TextureHeight);
+		for(var x = 0; x < tex.width; x++) {
+			for(var y = 0; y < tex.height; y++) {
+				var noi = noise.coherentNoise(x, y, 0, 2, 125, 2);
+				var color = new Color();
+				if(x == 100 && (y >= 100 && y <= 158)) {
+					waterCoords.Add(TextureToWorldCoords(x, y));
+				}
+				water[x, y] = noi;
+				tex.SetPixel(x, y, color);
+			}
+		}
+		tex.filterMode = FilterMode.Trilinear;
+		tex.Apply();
+		ground.renderer.sharedMaterials[0].mainTexture = tex;
+		
+	}
 	void GenerateWater(Transform ground) {
 		water = new float[TextureWidth, TextureHeight];
 		waterCoords = new List<Vector2>();
@@ -76,13 +102,7 @@ public class Terraform : MonoBehaviour {
 				if(noi > 0.5f) {
 					// water
 					color = new Color(0, 0, noi, noi);
-					float percentX = x * 1.0f / TextureWidth * 1.0f;
-					float percentZ = y * 1.0f / TextureHeight * 1.0f;
-					
-					// zero is in the center of the map, so we need to subtract half of the % number with the width
-					float xx = (CurrentSize.x * percentX) - (CurrentSize.x / 2.0f);
-					float zz = (CurrentSize.z * percentZ) - (CurrentSize.z / 2.0f);
-					waterCoords.Add(new Vector2(xx, zz));
+					waterCoords.Add(TextureToWorldCoords(x, y));
 				} else if(noi > 0.2f) {
 					// grass
 					//color = new Color(0, noi, 0, 0.8f);
@@ -95,9 +115,23 @@ public class Terraform : MonoBehaviour {
 		tex.filterMode = FilterMode.Trilinear;
 		tex.Apply();
 		ground.renderer.sharedMaterials[0].mainTexture = tex;
-
 	}
 
+	public Vector2 TextureToWorldCoords(int x, int y) {
+		float percentX = x * 1.0f / TextureWidth * 1.0f;
+		float percentZ = y * 1.0f / TextureHeight * 1.0f;
+		
+		// zero is in the center of the map, so we need to subtract half of the % number with the width
+		float xx = (CurrentSize.x * percentX) - (CurrentSize.x / 2.0f);
+		float zz = (CurrentSize.z * percentZ) - (CurrentSize.z / 2.0f);
+
+		xx *= -1;
+		zz *= -1;
+
+		return new Vector2(xx, zz);
+	
+	}
+	
 	void GenerateOre(Transform ground) {
 		ore = new float[TextureWidth, TextureHeight];
 		oreCoords = new List<Vector2>();
@@ -138,13 +172,24 @@ public class Terraform : MonoBehaviour {
 	
 	}
 
-	public Vector2 FindClosestWater(Vector2 from) {
+	public bool FindClosestWater(Vector2 from, out Vector2 to) {
+		to = Vector2.zero;
 		if(waterCoords.Count == 0) {
-			return Vector2.zero;
+			return false;
 		}
-		//var dists = waterCoords.OrderBy(o => Vector2.Distance(o, from)).Select(o => Vector2.Distance(o, from)).ToList(); 
- 		var ret = waterCoords.OrderByDescending(o => Vector2.Distance(o, from)).First();
-		return ret;
+
+		var index = 0;
+		var dist = float.MaxValue;
+		for(var x = 0; x < waterCoords.Count; x++) {
+			var dd = Vector2.Distance(waterCoords[x], from);
+			if(dd < dist) {
+				dist = dd;
+				index = x;
+			}
+		}
+
+		to = waterCoords[index];
+		return true;
 	}
 
 	public Vector3 FindClosestOre(Vector3 from) {

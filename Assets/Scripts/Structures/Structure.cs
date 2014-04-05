@@ -35,11 +35,11 @@ namespace Structures {
 		}
 
 		protected bool isAwake = false;
-		public void Awake() {
+		public void SetAlive() {
 			isAwake = true;
 		}
 
-		public void Sleep() {
+		public void SleepMe() {
 			isAwake = false;
 		}
 

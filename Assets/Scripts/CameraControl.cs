@@ -135,6 +135,7 @@ public class CameraControl : MonoBehaviour {
 			//Debug.Log("Plane Raycast hit at distance: " + ent);
 			pointerCube.transform.position = pos;
 			SelectorCube.transform.position = new Vector3(pos.x, -0.5f, pos.z);
+			CursorPoint = new Vector3(pos.x, 0, pos.z);
 			var stru = selectedPrefab.GetComponent<Structure>();
 			SelectorCube.transform.localScale = new Vector3(stru.GetSizeX(), 0.1f, stru.GetSizeZ());
 			
