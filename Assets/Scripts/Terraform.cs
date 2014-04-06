@@ -87,10 +87,40 @@ public class Terraform : MonoBehaviour {
 		ground.renderer.sharedMaterials[0].mainTexture = tex;
 		
 	}
+
+	void UpdateWaterTexture() {
+		waterCoords = new List<Vector2>();
+		// test creating a noise texture for water
+		var tex = new Texture2D(TextureWidth, TextureHeight);
+		for(var x = 0; x < tex.width; x++) {
+			for(var y = 0; y < tex.height; y++) {
+				// multiplier affects how large the patter is; the large the number the bigger the waves (noise)
+				// basically a small value will leave a bunch of small specles, large number larger objects
+				// noise.coherentNoise(x, y, 0, 10, 75, 1); -> looks like a star map
+				// noise.coherentNoise(x, y, 0, 1, 75, 2); -> clouds
+				var color = new Color();
+				var noi = water[x, y];
+				if(noi > 0.5f) {
+					// water
+					color = new Color(0, 0, noi, noi);
+					waterCoords.Add(TextureToWorldCoords(x, y));
+				} else if(noi > 0.2f) {
+					// grass
+					//color = new Color(0, noi, 0, 0.8f);
+				}
+				tex.SetPixel(x, y, color);
+			}
+		}
+		tex.filterMode = FilterMode.Trilinear;
+		tex.Apply();
+		transform.renderer.sharedMaterials[0].mainTexture = tex;
+	}
+
 	void GenerateWater(Transform ground) {
 		water = new float[TextureWidth, TextureHeight];
 		waterCoords = new List<Vector2>();
 		waterBeingCollectedAt = new List<Vector2>();
+		worldToTexture = new Dictionary<Vector2,Vector2>();
 		var noise = new SimplexNoiseGenerator();
 		// test creating a noise texture for water
 		var tex = new Texture2D(TextureWidth, TextureHeight);
@@ -120,6 +150,25 @@ public class Terraform : MonoBehaviour {
 		ground.renderer.sharedMaterials[0].mainTexture = tex;
 	}
 
+	Dictionary <Vector2, Vector2> worldToTexture = new Dictionary<Vector2,Vector2>();
+
+	public bool WorldCoordsToTextureCoords(Vector2 coord, out int x, out int y) {
+
+		x = 0;
+		y = 0;
+
+		if(worldToTexture.ContainsKey(coord)) {
+			var v1 = worldToTexture[coord];
+			x = (int) v1.x;
+			y = (int) v1.y;
+		} else {
+			Debug.LogError("Cannot find world to tex coords");
+			return false;
+		}
+
+		return true;
+	}
+
 	public Vector2 TextureToWorldCoords(int x, int y) {
 		float percentX = x * 1.0f / TextureWidth * 1.0f;
 		float percentZ = y * 1.0f / TextureHeight * 1.0f;
@@ -131,7 +180,11 @@ public class Terraform : MonoBehaviour {
 		xx *= -1;
 		zz *= -1;
 
-		return new Vector2(xx, zz);
+		var world = new Vector2(xx, zz);
+		if(!worldToTexture.ContainsKey(world)) {
+			worldToTexture.Add(world, new Vector2(x, y));
+		}
+		return world;
 	
 	}
 	
@@ -169,15 +222,38 @@ public class Terraform : MonoBehaviour {
 	void Start () {
 		BuildTerrain();
 	}
-	
+
+	float nextUpdateTime = 0.0f;
+	float period = 5.0f;
 	// Update is called once per frame
 	void Update () {
-	
+		if(Time.time > nextUpdateTime) {
+			nextUpdateTime += period;
+			UpdateWaterTexture();
+
+		}
 	}
 
 	public void NolongerCollectingWaterAt(Vector2 position) {
 		if(waterBeingCollectedAt != null) {
 			waterBeingCollectedAt.RemoveAll(o => o.Equals(position));
+		}
+	}
+
+	public void CollectWaterAt(Vector2 position) {
+		int x = 0;
+		int y = 0;
+		if(WorldCoordsToTextureCoords(position, out x, out y)) {
+			// just collecting all water now.. it's going to be really fast but no biggie
+			for(var xx = x - 5; xx < x + 5; xx++) {
+				for(var yy = y - 5; yy < y + 5; yy++) {
+					if(xx >= 0 && xx < TextureWidth && yy >=0 && yy < TextureHeight) {
+						water[xx, yy] = 0;
+					}
+				}
+			}
+		} else {
+			Debug.Log("Cannot find world to tex..");
 		}
 	}
 

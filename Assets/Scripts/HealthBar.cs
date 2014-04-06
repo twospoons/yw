@@ -10,7 +10,7 @@ public class HealthBar : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.LookAt(Camera.main.transform);
+		//transform.LookAt(Camera.main.transform);
 		//transform.Rotate(new Vector3(0, 45,0));
 	}
 }
