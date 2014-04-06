@@ -1,10 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Terraform.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CameraControl.cs">
     <Files>
-      <File FileName="Assets/Scripts/Structures/Collector.cs" Line="14" Column="32" />
-      <File FileName="Assets/Scripts/Terraform.cs" Line="213" Column="46" />
-      <File FileName="Assets/Scripts/CameraControl.cs" Line="151" Column="28" />
+      <File FileName="Assets/Scripts/Structures/Collector.cs" Line="49" Column="16" />
+      <File FileName="Assets/Scripts/Terraform.cs" Line="215" Column="48" />
+      <File FileName="Assets/Scripts/CameraControl.cs" Line="140" Column="1" />
       <File FileName="Assets/Scripts/BaseLayout.cs" Line="33" Column="116" />
       <File FileName="Assets/UIScripts/InfoUI.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/SimplexNoiseGenerator.cs" Line="1" Column="1" />
