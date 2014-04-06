@@ -46,8 +46,7 @@ namespace Structures {
 				var water = Vector2.zero;
 				var found = terra.FindClosestWater(
 					new Vector2(transform.position.x, transform.position.z), 
-					out water, 
-					baseLayout.GetCollectorWaterTargetsExcept(this),
+					out water,
 					avoidRadius);
 
 				if(found) {

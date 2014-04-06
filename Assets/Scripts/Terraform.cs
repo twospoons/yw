@@ -29,6 +29,8 @@ public class Terraform : MonoBehaviour {
 	private List<Vector2> waterCoords;
 	private List<Vector2> oreCoords;
 
+	private List<Vector2> waterBeingCollectedAt;
+
 	public List<Vector2> GetWaterCoords() {
 		return waterCoords;
 	}
@@ -88,6 +90,7 @@ public class Terraform : MonoBehaviour {
 	void GenerateWater(Transform ground) {
 		water = new float[TextureWidth, TextureHeight];
 		waterCoords = new List<Vector2>();
+		waterBeingCollectedAt = new List<Vector2>();
 		var noise = new SimplexNoiseGenerator();
 		// test creating a noise texture for water
 		var tex = new Texture2D(TextureWidth, TextureHeight);
@@ -171,68 +174,46 @@ public class Terraform : MonoBehaviour {
 	void Update () {
 	
 	}
-	private bool FindRequrse(Vector2 from, out Vector2 to, Vector3[] avoid, float avoidRadius, List<Vector2> avoidCheckedPoints) {
+
+	public void NolongerCollectingWaterAt(Vector2 position) {
+		if(waterBeingCollectedAt != null) {
+			waterBeingCollectedAt.RemoveAll(o => o.Equals(position));
+		}
+	}
+
+	public bool FindClosestWater(Vector2 from, out Vector2 to, float avoidRadius) {
+		to = Vector2.zero;
+		if(waterCoords.Count == 0) {
+			return false;
+		}
+
 		var index = 0;
 		var dist = float.MaxValue;
-		var avoidCoords = new List<Vector2>();
-		var ret = true;
 		for(var x = 0; x < waterCoords.Count; x++) {
-			var dd = Vector2.Distance(waterCoords[x], from);
-			if(!avoidCoords.Exists(waterCoords[x])) {
+			var canMineThisPoint = true;
+			// we try to avoid mining right next to some other collector
+			// when there are very few spots left, they will still clump up
+			// however, which is probably desireded.
+			foreach(var t in waterBeingCollectedAt) {
+				if(Vector2.Distance(t, waterCoords[x]) < avoidRadius) {
+					canMineThisPoint = false;
+					break;
+				}
+			}
+
+			if(canMineThisPoint) {
+				var dd = Vector2.Distance(waterCoords[x], from);
 				if(dd < dist) {
 					dist = dd;
 					index = x;
 				}
 			}
 		}
-		to = waterCoords[index];
-		foreach(var t in avoid) {
-			Debug.Log ("avoid...");
-			var v2 = new Vector2(t.x, t.z);
-			if(Vector2.Distance(to, v2) < avoidRadius) {
-				avoidCoords.Add(to);
-				// .. need to find another point since it's too close to other collectors
-				Debug.Log("too close to another target..");
-				ret = false;
-			}
-		}
-		ret = true;
-	}
 
-	public bool FindClosestWater(Vector2 from, out Vector2 to, Vector3[] avoid, float avoidRadius) {
-		to = Vector2.zero;
-		if(waterCoords.Count == 0) {
-			return false;
-		}
-		var avoidCoords = new List<Vector2>();
-		while(FindRequrse(from, out to, avoid, avoidRadius, avoidCoords)) {
-			if(avoidCoords.Count == waterCoords.Count) {
-				Debug.Log("All water is being occupied");
-				return false;
-			}
-		}
-
-		return true;
-		/*var index = 0;
-		var dist = float.MaxValue;
-		var avoidCoords = new List<Vector2>();
-		for(var x = 0; x < waterCoords.Count; x++) {
-			var dd = Vector2.Distance(waterCoords[x], from);
-			if(dd < dist) {
-				dist = dd;
-				index = x;
-			}
-		}
 		to = waterCoords[index];
-		foreach(var t in avoid) {
-			Debug.Log ("avoid...");
-			var v2 = new Vector2(t.x, t.z);
-			if(Vector2.Distance(to, v2) < avoidRadius) {
-				avoidCoords.Add(to);
-				// .. need to find another point since it's too close to other collectors
-				Debug.Log("too close to another target..");
-			}
-		}*/
+		if(!waterBeingCollectedAt.Any(o => o.Equals(waterCoords[index]))) {
+			waterBeingCollectedAt.Add(waterCoords[index]);
+		}
 		return true;
 	}
 
